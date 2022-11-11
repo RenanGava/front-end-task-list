@@ -27,7 +27,7 @@ export const GlobalStyle = createGlobalStyle`
 
         --dark-900: #101026;
         --dark-700: #1d1d2e;
-
+        
         --green-900: #3fffa3;
         --red-900: #ff3f4b;
     }

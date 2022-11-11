@@ -4,10 +4,6 @@ export const Container = styled.div`
     width: 100%;
     background-color: var(--blue-500);
     height: 100vh;
-
-
-  
-   
 `
 
 export const Content = styled.div`
