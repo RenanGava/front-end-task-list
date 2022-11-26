@@ -1,9 +1,11 @@
 import { FormEvent, useContext, useState } from "react";
+import dynamic from "next/dynamic";
 import { SiAuthy } from "react-icons/si";
 import { AuthContext } from "../../contexts/AuthContext";
 import { Container, Content, FormContainer } from "./style";
 import { toast } from 'react-toastify'
 import { Button } from "../../components/Button";
+import { canSSRAuth } from "../../utils/canSSRAuth";
 
 export default function SignUp() {
 	
@@ -75,3 +77,9 @@ export default function SignUp() {
 		</Container>
 	)
 }
+
+export const getServerSideProps = canSSRAuth(async (ctx) => {
+	return {
+		props:{}
+	}
+})

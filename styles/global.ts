@@ -52,3 +52,31 @@ export const GlobalStyle = createGlobalStyle`
     }
 
 `
+export const theme= {
+
+    blue200: "#cdd9f4",
+    blue300: "#9bb3ea",
+    blue500: "#698cdf",
+    blue700: "#3766d5",
+    blue900: "#0540ca",
+    /* Escala De Cinza */
+    gray0  : "#ffffff",
+    gray50 : "#e7e7e7",
+    gray100: "#cfcfcf",
+    gray200: "#b7b7b7",
+    gray300: "#9f9f9f",
+    gray400: "#888887",
+    gray500: "#70706f",
+    gray600: "#585857",
+    gray700: "#40403f",
+    gray800: "#282827",
+    gray900: "#111110",
+    white: "#FFF",
+    black: "#000",
+
+    dark900: "#101026",
+    dark700: "#1d1d2e",
+
+    green900: "#3fffa3",
+    red900: "#ff3f4b",
+}
