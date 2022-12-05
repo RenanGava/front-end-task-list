@@ -42,4 +42,10 @@ export const ButtonSubmit = styled.button`
         }
     }
 
+    @media (min-width: 1080px) {
+        &{
+            margin-top: 1.5rem;
+        }
+    }
+
 `

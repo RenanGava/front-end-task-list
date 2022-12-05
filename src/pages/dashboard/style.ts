@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { IoMdCloseCircleOutline, IoMdCheckmarkCircleOutline } from 'react-icons/io'
+import { Modal } from "../../components/Modal";
 
 
 export const Container = styled.div`
@@ -22,7 +23,7 @@ export const Container = styled.div`
         tbody{
             
             width: 100%;
-            height: 460px;
+            max-height: 460px;
             overflow-y: scroll;
             display: block;
             ::-webkit-scrollbar{
@@ -85,92 +86,29 @@ export const IsComplete = styled(IoMdCheckmarkCircleOutline)`
     border-radius: 800px;
     margin-top: 6px;
 `
-
-export const ModalContent = styled.div`
-    width: 100%;
-    height: 100%;
-    
-    display: flex;
-    flex-direction: column;
-
-    button.close{
-        position: absolute;
-        right: -3rem;
-        top: -4rem;
-        background-color: transparent;
-        border: 0;
-    }
-
-`
-
-export const ModalHeaderContainer = styled.div`
-    background-color: var(--blue-900);
-    height: 4rem;
-    border-radius: 1rem 1rem 0 0;
-    border: 0;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    justify-content: center;
-    align-items: center;
-
-    div.title{
-        display: flex;
-        flex: 1;
-        padding-left: 2rem;
-    }
-
-    div.icons{
-        flex: 1;
-        display: flex;
-        justify-content: space-evenly;
-    }
-
-`
-
-export const ModalContentContainer = styled.div`    
-    overflow-y: scroll;
-    height: 300px;
-    margin: 0.5rem;
-    margin-top: 2rem;
-    border: 0;
-    font-weight: 500;
-    padding: 0 2rem;
-    ::-webkit-scrollbar{
-        width: 8px;
-    }
-    ::-webkit-scrollbar-thumb{
-        background-color: var(--blue-200);
-        border-radius: 20px;
-    }
-    ::-webkit-scrollbar-track{
-        margin-left: 5px;
-    }
-`
-
-interface ChangeStatusProps{
-    status: boolean
-}
-
-export const ChangeStatus = styled.button<ChangeStatusProps>`
-    width: 4rem;
-    margin: 2rem auto;
-    height: 2rem;
-    border: 2px solid var(--gray-200);
-    border-radius: 2rem;
-    background: ${props => props.status? "var(--green-900)": "var(--red-900)"};
-
-    span{
-        display: block;
+export const CreateTaskButton = styled.div`
+    text-align: center;
+    button.form--create--task{
         position: relative;
-        width: 2rem;
-        top: -2px;
-        left: ${props => props.status? "-2%": "50%"};
-        height: 2rem;
-        border: 2px solid var(--dark-900);
-        border-radius: 2rem;
-        background: var(--gray-50);
-        transition: left 1s;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 150%;
+
+        &[disabled]{
+            max-width: 152px;
+            width: 12rem;
+
+            @media screen and (min-width: 1080px){
+                max-width: 162px;
+            }
+        }
+
+    }
+
+    @media screen and (min-width: 1080px){
+        &.submit-task{
+            
+        }
     }
 
 `

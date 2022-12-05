@@ -11,7 +11,8 @@ export const Container = styled(Modal)`
     background-color: var(--white);
 
     height: 500px;
-    width: 40%; 
+    width: 40%;
+    max-width: 385px;
 
     border-radius: 1rem;
     
@@ -19,5 +20,4 @@ export const Container = styled(Modal)`
     &:focus{
         outline: none;
     }
-
 `

@@ -5,24 +5,21 @@ interface TaskProviderProps {
     children: ReactNode
 }
 
+
+
 interface TaskContextData {
-    createTask: () => Promise<void>
+    
 }
 
 const TaskContext = createContext<TaskContextData>({} as TaskContextData)
 
 export function TaskProvider({ children }: TaskProviderProps) {
 
-    async function createTask(){
-        // verificar se a task jé existe
-
-        // se não existir criar a task
-    }
-
+    
 
 
     return(
-        <TaskContext.Provider value={{createTask}}>
+        <TaskContext.Provider value={{}}>
             {children}
         </TaskContext.Provider>
     )
@@ -33,4 +30,3 @@ export function UseTaskFunctions() {
 
     return context
 }
-

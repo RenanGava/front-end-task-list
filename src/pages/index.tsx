@@ -81,4 +81,4 @@ export const getServerSideProps = canSSRGuest(async ctx =>{
 	}
 })
 
-Modal.setAppElement(document.getElementById("modal"))
+Modal.setAppElement("#__next")

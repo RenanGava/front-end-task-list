@@ -5,7 +5,8 @@ import { AuthProvider } from '../contexts/AuthContext'
 import 'react-toastify/dist/ReactToastify.css'
 import { ThemeProvider } from 'styled-components'
 import { useEffect, useState } from 'react'
-import { TaskProvider } from "../contexts/TaskFunctions"
+import { TaskProvider } from '../contexts/TaskContext'
+
 
 export default function App({ Component, pageProps }: AppProps) {
 

@@ -1,23 +1,51 @@
 import { Header } from "../../components/Header"
 import { canSSRAuth } from "../../utils/canSSRAuth"
-import { ChangeStatus, Container, IsComplete, ModalContent, ModalContentContainer, ModalHeaderContainer, NotComplete } from "./style"
-import { Modal } from "../../components/Modal"
+import { Container, CreateTaskButton, IsComplete, NotComplete } from "./style"
 import { useState } from "react"
-import { BsFillPencilFill, BsTrash } from 'react-icons/bs'
-import { IoMdCloseCircleOutline } from "react-icons/io"
+import { Button } from "../../components/Button"
+import { setupAPIClient } from "../../services/api"
+import { ChangeStatusModal } from "../../components/ChangeStatusModal"
+import { ModalCreateTask } from "../../components/CreateTaskModal"
+
+interface TaskListProps {
+    id: string,
+    title: string,
+    user_id: string,
+    description: string,
+    status: boolean,
+    banner: string,
+    completed_at: string
+}
 
 
+interface DashboardProps {
+    tasks: TaskListProps[]
+}
 
-export default function Dashboard() {
 
-    const [isModalOpen, setIsModalOpen] = useState(false)
+export default function Dashboard({ tasks }: DashboardProps) {
 
-    const [isComplete, setIsComplete] = useState(true)
+    const [taskList, setTaskList] = useState(tasks || [])
+    const [changeStatusTask, setChangeStatusTask] = useState<TaskListProps>()
 
-    function handleToggleValue(){
-        setIsComplete(!isComplete)
-        
+    const [isEditTaskOpen, setIsEditTaskOpen] = useState(false)
+    const [isCreateTaskOpen, setIsCreateTaskOpen] = useState(false)
+
+
+    // console.log(tasks);
+
+
+    function handleSelectedTaskChangeStatus(task: TaskListProps){
+        setChangeStatusTask(task)
+        setIsEditTaskOpen(true)
     }
+
+
+    async function handleOpenCreateTaskModal() {
+        setIsCreateTaskOpen(true)
+    }
+
+
 
     return (
         <>
@@ -32,120 +60,63 @@ export default function Dashboard() {
                         </tr>
                     </thead>
                     <tbody>
-                        <tr onClick={() => setIsModalOpen(true)}>
-                            <td>
-                                {isComplete ? <IsComplete /> : <NotComplete />}
-                            </td>
-                            <td>Estudar Programação</td>
-                            <td> 12/10/2020</td>
-                        </tr>
-                        <tr>
-                            <td>
-                                {isComplete ? <IsComplete /> : <NotComplete />}
-                            </td>
-                            <td>Estudar Programação</td>
-                            <td> 12/10/2020</td>
-                        </tr>
-                        <tr>
-                            <td>
-                                {isComplete ? <IsComplete /> : <NotComplete />}
-                            </td>
-                            <td>Estudar Programação</td>
-                            <td> 12/10/2020</td>
-                        </tr>
-                        <tr>
-                            <td>
-                                {isComplete ? <IsComplete /> : <NotComplete />}
-                            </td>
-                            <td>Estudar Programação</td>
-                            <td> 12/10/2020</td>
-                        </tr>
-                        <tr>
-                            <td>
-                                {isComplete ? <IsComplete /> : <NotComplete />}
-                            </td>
-                            <td>Estudar Programação</td>
-                            <td> 12/10/2020</td>
-                        </tr>
+                        {
+                            taskList.map(task => {
+                                return (
+                                    <tr key={task.id} onClick={() => handleSelectedTaskChangeStatus(task)}>
+                                        <td>
+                                            {task.status ? <IsComplete /> : <NotComplete />}
+                                        </td>
+                                        <td>{task.description}</td>
+                                        <td>
+                                            {
+                                                task.completed_at ? task.completed_at : "--"
+                                            }
+                                        </td>
+                                    </tr>
+                                )
+                            })
+                        }
                     </tbody>
                 </table>
             </Container>
-            <Modal
-                isOpen={isModalOpen}
-                onRequestClose={() => setIsModalOpen(false)}
-                
-                
-            >
-                <ModalContent>
-                    <button className="close" onClick={ () => setIsModalOpen(false)}>
-                        <IoMdCloseCircleOutline
-                            size={30}
-                            color="#ff3f4b"
-                        />
-                    </button>
-                    <ModalHeaderContainer>
-                        <div className="title">
-                            <p>Title</p>
-                        </div>
-                        <div className="icons">
-                            <BsFillPencilFill
-                                size={20}
-                                color="#3fffa3"
-                            />
-                            <BsTrash
-                                size={20}
-                                color="#ff3f4b"
-                            />
-                        </div>
 
-                    </ModalHeaderContainer>
-                    <ModalContentContainer>
-                        Lorem ipsum dolor sit amet,
-                        consectetur adipisicing elit.
-                        Dicta facilis eum tenetur quae
-                        sapiente fuga accusantium.
-                        Pariatur consequatur at explicabo
-                        esse commodi maiores. Facere, corporis
-                        id. Totam ex consectetur qui omnis voluptates
-                        cupiditate mollitia soluta necessitatibus
-                        pariatur nisi sunt beatae, minima placeat
-                        sapiente alias nulla reiciendis autem, ipsa
-                        animi vitae nobis aspernatur! Pariatur
-                        commodi sapiente ratione nostrum ullam
-                        soluta earum consectetur voluptate,
-                        temporibus, perspiciatis quia molestiae
-                        possimus repellat odio aut.
-                        Lorem ipsum dolor sit amet,
-                        consectetur adipisicing elit.
-                        Dicta facilis eum tenetur quae
-                        sapiente fuga accusantium.
-                        Pariatur consequatur at explicabo
-                        esse commodi maiores. Facere, corporis
-                        id. Totam ex consectetur qui omnis voluptates
-                        cupiditate mollitia soluta necessitatibus
-                        pariatur nisi sunt beatae, minima placeat
-                        sapiente alias nulla reiciendis autem, ipsa
-                        animi vitae nobis aspernatur! Pariatur
-                        commodi sapiente ratione nostrum ullam
-                        soluta earum consectetur voluptate,
-                        temporibus, perspiciatis quia molestiae
-                        possimus repellat odio aut.
-                    </ModalContentContainer>
-                    <ChangeStatus
-                        onClick={handleToggleValue}
-                        status={isComplete}
-                    >
-                        <span></span>
-                    </ChangeStatus>
-                </ModalContent>
-            </Modal>
+            <ChangeStatusModal
+                isOpen={isEditTaskOpen}
+                onRequestClose={() => setIsEditTaskOpen(false)}
+                task={changeStatusTask}
+            />
+
+            <ModalCreateTask
+                isOpen={isCreateTaskOpen}
+                onRequestClose={() => setIsCreateTaskOpen(false)}
+            />
+
+            <CreateTaskButton>
+                <Button
+                    onClick={handleOpenCreateTaskModal}
+                >
+                    Add Tarefa
+                </Button>
+            </CreateTaskButton>
+
         </>
     )
 }
 
 
 export const getServerSideProps = canSSRAuth(async ctx => {
+
+    const apiClient = setupAPIClient(ctx)
+
+    const { data } = await apiClient.get('/list/tasks')
+
+
+    console.log(data)
+
     return {
-        props: {}
+        props: {
+            tasks: data
+        }
     }
 })
