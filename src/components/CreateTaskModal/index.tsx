@@ -1,3 +1,4 @@
+import Router from "next/router"
 import { title } from "process"
 import { ChangeEvent, FormEvent, useState } from "react"
 import { FiUpload } from "react-icons/fi"
@@ -17,6 +18,7 @@ interface CreateTaskModalProps{
 export function ModalCreateTask({ 
     isOpen, 
     onRequestClose,
+
 }: CreateTaskModalProps) {
 
 
@@ -77,8 +79,6 @@ export function ModalCreateTask({
         setImageUrl('')
 
         console.log(response.data);
-
-
 
     }
 

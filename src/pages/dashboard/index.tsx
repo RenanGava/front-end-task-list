@@ -1,11 +1,12 @@
 import { Header } from "../../components/Header"
 import { canSSRAuth } from "../../utils/canSSRAuth"
 import { Container, CreateTaskButton, IsComplete, NotComplete } from "./style"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Button } from "../../components/Button"
 import { setupAPIClient } from "../../services/api"
 import { ChangeStatusModal } from "../../components/ChangeStatusModal"
 import { ModalCreateTask } from "../../components/CreateTaskModal"
+import { api } from "../../services/apiClient"
 
 interface TaskListProps {
     id: string,
@@ -31,10 +32,6 @@ export default function Dashboard({ tasks }: DashboardProps) {
     const [isEditTaskOpen, setIsEditTaskOpen] = useState(false)
     const [isCreateTaskOpen, setIsCreateTaskOpen] = useState(false)
 
-
-    // console.log(tasks);
-
-
     function handleSelectedTaskChangeStatus(task: TaskListProps){
         setChangeStatusTask(task)
         setIsEditTaskOpen(true)
@@ -50,6 +47,7 @@ export default function Dashboard({ tasks }: DashboardProps) {
     return (
         <>
             <Header />
+            
             <Container>
                 <table>
                     <thead>
@@ -108,11 +106,11 @@ export default function Dashboard({ tasks }: DashboardProps) {
 export const getServerSideProps = canSSRAuth(async ctx => {
 
     const apiClient = setupAPIClient(ctx)
-
+    
     const { data } = await apiClient.get('/list/tasks')
 
 
-    console.log(data)
+    // console.log(data)
 
     return {
         props: {

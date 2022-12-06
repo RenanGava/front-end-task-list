@@ -18,9 +18,6 @@ interface TaskListProps {
 }
 
 
-// type StatusChangedProps = Omit<TaskListProps, 'banner' | 'title' | 'user_id' | 'description'>
-
-
 interface ChangeStatusModalProps {
     isOpen: boolean,
     onRequestClose: () => void
@@ -28,40 +25,47 @@ interface ChangeStatusModalProps {
 }
 
 export function ChangeStatusModal({ isOpen, onRequestClose, task }: ChangeStatusModalProps) {
-    // isEditTaskOpen
-    // () => setIsEditTaskOpen(false)
 
-    const [isComplete, setIsComplete] = useState<boolean>(task?.status)
+
     const [loading, setLoading] = useState(false)
-    // const [setStatus, setLoading] = useState(false)
+    const [isComplete, setIsComplete] = useState<boolean>()
+    const [taskSelect, setTaskSelect] = useState<TaskListProps>()
 
-    console.log(isComplete);
-    
-    useEffect( () =>{
-        setIsComplete(task?.status)
-    },[task?.status])
-    
-    async function handleToggleValue(taskSelected: TaskListProps) {
+    useEffect(() => {
+        async function populateTaskSelect() {
+            const api = setupAPIClient()
+            const response = await api.get("/task/detail", {
+                params: {
+                    task_id: task?.id
+                },
+            })
+            setTaskSelect(response.data)
+            setIsComplete(response.data?.status)
+        }
+        populateTaskSelect()
+    }, [task])
 
-        setIsComplete(!isComplete)
 
+    async function handleToggleValue() {
+
+        setIsComplete(!taskSelect?.status)
 
         // usa para pegar a data data forma que é criada pelo banco de dados
         const currentTime = new Date().toISOString()
         const apiClient = setupAPIClient()
-        const data = {
-                task_id: taskSelected.id,
-                completed_at: currentTime,
-                status: !isComplete
-        }
 
 
         setLoading(true)
 
-        const response = await apiClient.put('/update/task', data)
+        const response = await apiClient.put('/update/task', {
+            task_id: taskSelect.id,
+            description: taskSelect.description,
+            completed_at: currentTime,
+            status: isComplete
+        })
 
         console.log(response.data);
-        
+
 
         setLoading(false)
 
@@ -69,7 +73,7 @@ export function ChangeStatusModal({ isOpen, onRequestClose, task }: ChangeStatus
 
     }
 
-    // console.log(task);
+
 
     return (
         <Modal
@@ -107,7 +111,7 @@ export function ChangeStatusModal({ isOpen, onRequestClose, task }: ChangeStatus
                     </p>
                 </ModalContentContainer>
                 <ChangeStatus
-                    onClick={() => handleToggleValue(task)}
+                    onClick={handleToggleValue}
                     status={isComplete}
                 >
                     <span>

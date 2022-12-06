@@ -31,6 +31,7 @@ interface AuthContextData {
     signUp: (credentiasl: SignUpProps) => Promise<void>
     signIn: (credentiasl: SignInProps) => Promise<void>
     signOut: () => void
+    isAuthenticated: boolean
 }
 
 export const AuthContext = createContext<AuthContextData>({} as AuthContextData)
@@ -129,7 +130,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
 
     return (
-        <AuthContext.Provider value={{ signUp, signOut, signIn, user }}>
+        <AuthContext.Provider value={{ signUp, signOut, signIn, user, isAuthenticated }}>
             {children}
         </AuthContext.Provider>
     )

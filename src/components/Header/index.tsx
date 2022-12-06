@@ -1,10 +1,13 @@
 import { Container, Logo, User, ContentContainer } from "./style";
 import { SiAuthy } from 'react-icons/si'
 import { useEffect, useState } from "react";
+import { useAuthContext } from "../../contexts/AuthContext";
 
 
 
 export function Header() {
+
+    const { user, isAuthenticated } = useAuthContext()
 
 
     return (
@@ -22,7 +25,7 @@ export function Header() {
                 </Logo>
                 <User>
                     <div>
-                        Renan D. Gava
+                        {user?.name}
                         <span>
                             <SiAuthy
                                 color="#3fffa1"
